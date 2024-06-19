@@ -1,0 +1,22 @@
+[
+ {
+  "pais": "Argentina",
+  "capital": "Buenos Aires"
+ },
+ {
+  "pais": "Peru",
+  "capital": "Lima"
+ },
+ {
+  "pais": "Chile",
+  "capital": "Santiago"
+ },
+ {
+  "pais": "Bolivia",
+  "capital": "La Paz"
+ },
+ {
+  "pais": "Venezuela",
+  "capital": "Caracas"
+ }
+]
