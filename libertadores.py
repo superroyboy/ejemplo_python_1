@@ -3,27 +3,56 @@ import time
 import csv
 
 def unpartido(e1,e2,marcador):
-    print("1 partido",e1,marcador,e2, end=' : ')
-    goles1 = int(marcador[0])
-    goles2 = int(marcador[2])
-    if goles1 > goles2:
-        print("Ganador",e1)
+    #print("1 partido",e1,marcador,e2, end=' : ')
+    if "pen." in marcador :
+        resultado=marcador[-9:]
     else:
-        if goles2 > goles1 :
-            print("Ganador",e2)
-        else:
-            print("Empate") # nota , en este caso analizar penales
-        #end if
+        resultado=marcador[0:3]
+    
+    g1 = int(resultado[0])
+    g2 = int(resultado[2])
+    
+    if g1 > g2 :
+        print(e1) 
+        return e1
+    else :
+        print(e2)
+        return e2
+    
     #end if
 #fin def
 
 def dospartidos(e1,e2,marcador1,marcador2):
-    print("2 partidos",e1,marcador1,marcador2,e2)
+    #print("2 partidos",e1,marcador1,marcador2,e2)
+    if "pen." in marcador2 :
+        w = unpartido(e1,e2,marcador2)
+    else:
+        
+        g1 = int(marcador1[0]) + int(marcador2[0]) 
+        g2 = int(marcador1[2]) + int(marcador2[2]) 
+    
+        if g1 > g2 :
+            print(e1) 
+            w=e1
+        else :
+            print(e2)
+            w=e2
+            
+    return w
+        
 #fin def
 
 def trespartidos(e1,e2,marcador1,marcador2, marcador3):
-    print("3 partidos",e1,marcador1,marcador2,marcador3,e2)
+    #print("3 partidos",e1,marcador1,marcador2,marcador3,e2)
+    if marcador3 != "" :
+        w = unpartido(e1,e2,marcador3)
+    else:
+        w = dospartidos(e1,e2,marcador1,marcador2)
+        
+    return w
 #fin def
+
+Ganadores = []
 
 os.system('cls')
 
@@ -32,6 +61,7 @@ with open('C:\\Users\\CETECOM\\Downloads\\FinalesLibertadores.csv','r',encoding=
     contenido = csv.DictReader(entrada)
     for linea in contenido:
         #print(linea)
+        #print('----------------------------')
         
         año=int(linea['Año'])
         equipo1=linea['Equipo1']
@@ -43,23 +73,32 @@ with open('C:\\Users\\CETECOM\\Downloads\\FinalesLibertadores.csv','r',encoding=
         pais2=linea['Pais2']
         
         print(año,end=': ')
+        
         if año< 1988:
-            trespartidos(equipo1,equipo2,marcador1,marcador2, marcador3)
+            w = trespartidos(equipo1,equipo2,marcador1,marcador2, marcador3)
         else:
             if año <2019:
-                dospartidos(equipo1,equipo2,marcador1,marcador2)
+                w = dospartidos(equipo1,equipo2,marcador1,marcador2)
             else:
-                unpartido(equipo1,equipo2,marcador1)
+                w = unpartido(equipo1,equipo2,marcador1)
             #fin if
         #fin if
         
-        #time.sleep(1)
+        Ganadores.append ( { 'Año': año, 'Ganador': w } )
         
-        
-    #fin for    
+        time.sleep(0.5)
+
+    #fin for
+     
 #fin with
 print('Cerramos el archivo')
 
+import json
+
+with open('C:\\Users\\CETECOM\\Downloads\\GanadoresLibertadores.json','w',encoding='utf-8') as salida:
+    json.dump(Ganadores,salida, indent=1)
+
+print('***')
 
 
 
